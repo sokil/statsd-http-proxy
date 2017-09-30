@@ -49,6 +49,7 @@ func (client *StatsdClient) Open() {
 		log.Println(err)
 	}
 	client.conn = conn
+	client.autoflush = false
 }
 
 // Method to close udp connection
