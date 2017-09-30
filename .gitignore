@@ -4,6 +4,9 @@
 *.so
 *.dylib
 
+# third party components
+src
+
 # Test binary, build with `go test -c`
 *.test
 
