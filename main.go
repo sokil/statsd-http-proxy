@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"github.com/gorilla/mux"
 	"./statsd"
+	"github.com/dgrijalva/jwt-go"
 )
 
 const DEFAULT_HTTP_HOST = "127.0.0.1"
@@ -26,7 +27,7 @@ var httpHost = flag.String("http-host", DEFAULT_HTTP_HOST, "HTTP Host")
 var httpPort = flag.Int("http-port", DEFAULT_HTTP_PORT, "HTTP Port")
 var statsdHost = flag.String("statsd-host", DEFAULT_STATSD_HOST, "StatsD Host")
 var statsdPort = flag.Int("statsd-port", DEFAULT_STATSD_PORT, "StatsD Port")
-var JWTSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
+var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
 
 // statsd client
@@ -62,27 +63,27 @@ func main() {
 	// register http request handlers
 	router.Handle(
 		"/heartbeat",
-		http.HandlerFunc(handleHeartbeatRequest),
+		validateCORS(http.HandlerFunc(handleHeartbeatRequest)),
 	).Methods("GET")
 
 	router.Handle(
 		"/count/{key}",
-		validateJWT(http.HandlerFunc(handleCountRequest)),
+		validateCORS(validateJWT(http.HandlerFunc(handleCountRequest))),
 	).Methods("POST")
 
 	router.Handle(
 		"/gauge/{key}",
-		validateJWT(http.HandlerFunc(handleGaugeRequest)),
+		validateCORS(validateJWT(http.HandlerFunc(handleGaugeRequest))),
 	).Methods("POST")
 
 	router.Handle(
 		"/timing/{key}",
-		validateJWT(http.HandlerFunc(handleTimingRequest)),
+		validateCORS(validateJWT(http.HandlerFunc(handleTimingRequest))),
 	).Methods("POST")
 
 	router.Handle(
 		"/set/{key}",
-		validateJWT(http.HandlerFunc(handleSetRequest)),
+		validateCORS(validateJWT(http.HandlerFunc(handleSetRequest))),
 	).Methods("POST")
 
 	// Create a new StatsD connection
@@ -98,25 +99,48 @@ func main() {
 	}
 }
 
+// validate CORS headers
+func validateCORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		origin := r.Header.Get("Origin")
+		if origin != "" {
+			w.Header().Add("Access-Control-Allow-Headers", "X-Requested-With, Origin, Accept, Content-Type, Authentication")
+			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
+			w.Header().Add("Access-Control-Allow-Origin", origin)
+			w.Header().Add("Access-Control-Expose-Headers", "X-Sentry-Error, Retry-After")
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 // validate JWT middleware
 func validateJWT(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if *JWTSecret == "" {
+		if *tokenSecret == "" {
 			next.ServeHTTP(w, r)
 		} else {
-			// get actual JWT
-			JWT := r.Header.Get(JWT_HEADER_NAME)
-			log.Printf("Validate token %s by sectet %s", JWT, *JWTSecret)
-
-			// unpack JWT
-			if (false) {
-				http.Error(w, "Forbidden", 403)
+			// get JWT
+			tokenString := r.Header.Get(JWT_HEADER_NAME)
+			if tokenString == "" {
+				http.Error(w, "Token not specified", 401)
+				return
 			}
 
-			// JWT expired
-			if (false) {
-				http.Error(w, "Token expired", 498)
+			// parse JWT
+			_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+				}
+				return []byte(*tokenSecret), nil
+			})
+
+			if err != nil {
+				http.Error(w, "Error parsing token", 403)
+				return
 			}
+
+			// accept request
+			next.ServeHTTP(w, r)
 		}
 
 	})
