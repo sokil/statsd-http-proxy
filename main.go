@@ -86,8 +86,9 @@ func main() {
 	).Methods("POST")
 
 	// Create a new StatsD connection
-	statsdClient = *statsd.New(*statsdHost, *statsdPort, true)
+	statsdClient = *statsd.New(*statsdHost, *statsdPort)
 	statsdClient.SetAutoflush(true)
+	statsdClient.Open()
 
 	// start http server
 	err := s.ListenAndServe()
