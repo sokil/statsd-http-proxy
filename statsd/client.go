@@ -5,31 +5,31 @@ import (
 	"log"
 	"math/rand"
 	"net"
-	"time"
 	"strings"
+	"time"
 )
 
-const metricTypeCount = 'c';
-const metricTypeGauge = 'g';
-const metricTypeTiming = 't';
-const metricTypeSet = 's';
+const metricTypeCount = 'c'
+const metricTypeGauge = 'g'
+const metricTypeTiming = 't'
+const metricTypeSet = 's'
 
 // The Client type
 type Client struct {
 	host      string
 	port      int
-	conn      net.Conn // UDP connection to StatsD server
-	rand      *rand.Rand // rand generator to skip messages by sample rate
+	conn      net.Conn          // UDP connection to StatsD server
+	rand      *rand.Rand        // rand generator to skip messages by sample rate
 	keyBuffer map[string]string // array of messages to send
-	autoflush bool // send metrics on every call
+	autoflush bool              // send metrics on every call
 }
 
 // New StatsD client
 func NewClient(host string, port int) *Client {
 	client := Client{
-		host: host,
-		port: port,
-		rand: rand.New(rand.NewSource(time.Now().Unix())),
+		host:      host,
+		port:      port,
+		rand:      rand.New(rand.NewSource(time.Now().Unix())),
 		keyBuffer: make(map[string]string),
 	}
 	return &client
@@ -62,7 +62,7 @@ func (client *Client) SetAutoflush(autoflush bool) {
 func (client *Client) Timing(key string, time int64, sampleRate float32) {
 	metricValue := fmt.Sprintf("%d|%s", time, metricTypeTiming)
 	if sampleRate < 1 {
-		if (client.isSendAcceptedBySampleRate(sampleRate)) {
+		if client.isSendAcceptedBySampleRate(sampleRate) {
 			metricValue = fmt.Sprintf("%s|@%f", metricValue, sampleRate)
 		} else {
 			return
@@ -78,7 +78,7 @@ func (client *Client) Timing(key string, time int64, sampleRate float32) {
 func (client *Client) Count(key string, delta int, sampleRate float32) {
 	metricValue := fmt.Sprintf("%d|%s", delta, metricTypeCount)
 	if sampleRate < 1 {
-		if (client.isSendAcceptedBySampleRate(sampleRate)) {
+		if client.isSendAcceptedBySampleRate(sampleRate) {
 			metricValue = fmt.Sprintf("%s|@%f", metricValue, sampleRate)
 		} else {
 			return
