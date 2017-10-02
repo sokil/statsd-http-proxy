@@ -3,6 +3,7 @@
 *.dll
 *.so
 *.dylib
+statsd-rest-server
 
 # third party components
 src
