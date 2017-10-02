@@ -26,13 +26,14 @@ type Client struct {
 	autoflush     bool              // send metrics on every call
 }
 
-// New StatsD client
+// NewClient creates new StatsD client
 func NewClient(host string, port int) *Client {
 	client := Client{
 		host:      host,
 		port:      port,
 		rand:      rand.New(rand.NewSource(time.Now().Unix())),
 		keyBuffer: make(map[string]string),
+		autoflush: false,
 	}
 	return &client
 }
@@ -45,7 +46,6 @@ func (client *Client) Open() {
 		log.Println(err)
 	}
 	client.conn = conn
-	client.autoflush = false
 }
 
 // Close UDP connection to statsd server
@@ -125,7 +125,7 @@ func (client *Client) isSendAcceptedBySampleRate(sampleRate float32) bool {
 // flush buffer to statsd daemon by UDP
 func (client *Client) Flush() {
 	// prepare metric packet
-	metricPacketArray := make([]string, len(client.keyBuffer))
+	var metricPacketArray []string
 
 	// lock
 	client.keyBufferLock.Lock()
@@ -134,7 +134,7 @@ func (client *Client) Flush() {
 	for key, metricValue := range client.keyBuffer {
 		metricPacketArray = append(metricPacketArray, fmt.Sprintf("%s:%s", key, metricValue))
 	}
-	metricPacket := strings.Join(metricPacketArray, "|")
+	metricPacket := strings.Join(metricPacketArray, "\n")
 
 	// clear key buffer
 	client.keyBuffer = make(map[string]string)

@@ -87,24 +87,24 @@ value=1
 
 ```
 $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGF0c2QtcmVzdC1zZXJ2ZXIiLCJpYXQiOjE1MDY5NzI1ODAsImV4cCI6MTg4NTY2Mzc4MCwiYXVkIjoiaHR0cHM6Ly9naXRodWIuY29tL3Nva2lsL3N0YXRzZC1yZXN0LXNlcnZlciIsInN1YiI6InNva2lsIn0.sOb0ccRBnN1u9IP2jhJrcNod14G5t-jMHNb_fsWov5c' "http://127.0.0.1:8080/count/a.b.c.d POST"
-** SIEGE 4.0.2
-** Preparing 255 concurrent users for battle.
-The server is now under siege...
-Transactions:                  65025 hits
-Availability:                 100.00 %
-Elapsed time:                  21.21 secs
-Data transferred:               0.00 MB
-Response time:                  0.06 secs
-Transaction rate:            3065.77 trans/sec
-Throughput:                     0.00 MB/sec
-Concurrency:                  174.70
-Successful transactions:       65025
-Failed transactions:               0
-Longest transaction:            1.29
-Shortest transaction:           0.00
+  ** SIEGE 4.0.2
+  ** Preparing 255 concurrent users for battle.
+  The server is now under siege...
+  Transactions:                  65025 hits
+  Availability:                 100.00 %
+  Elapsed time:                  19.64 secs
+  Data transferred:               0.00 MB
+  Response time:                  0.05 secs
+  Transaction rate:            3310.85 trans/sec
+  Throughput:                     0.00 MB/sec
+  Concurrency:                  180.67
+  Successful transactions:       65025
+  Failed transactions:               0
+  Longest transaction:            1.37
+  Shortest transaction:           0.00
 
 
-real    0m21.238s
-user    0m6.060s
-sys     0m57.504s
+  real    0m19.694s
+  user    0m6.068s
+  sys     0m38.440s
 ```
