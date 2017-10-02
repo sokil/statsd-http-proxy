@@ -9,10 +9,10 @@ import (
 	"time"
 )
 
-const metricTypeCount = 'c'
-const metricTypeGauge = 'g'
-const metricTypeTiming = 't'
-const metricTypeSet = 's'
+const metricTypeCount = "c"
+const metricTypeGauge = "g"
+const metricTypeTiming = "t"
+const metricTypeSet = "s"
 
 // The Client type
 type Client struct {
