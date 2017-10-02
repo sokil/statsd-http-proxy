@@ -1,7 +1,7 @@
 # statsd-rest-server
 HTTP Server with REST interface to StatsD
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-rest-server?1)](https://goreportcard.com/report/github.com/sokil/statsd-rest-server)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-rest-server?2)](https://goreportcard.com/report/github.com/sokil/statsd-rest-server)
 
 This server is a HTTP proxy to UDP connection. Usefull for sending tracking to StatsD from frontend by AJAX. Authentication based on jwt token.
 
