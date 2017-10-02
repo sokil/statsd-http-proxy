@@ -124,7 +124,7 @@ func (client *Client) isSendAcceptedBySampleRate(sampleRate float32) bool {
 	return randomNumber <= sampleRate
 }
 
-// flush buffer to statsd daemon by UDP
+// Flush buffer to statsd daemon by UDP
 func (client *Client) Flush() {
 	// check if buffer has metrics
 	if len(client.keyBuffer) == 0 {
