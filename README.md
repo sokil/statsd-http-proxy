@@ -27,3 +27,29 @@ statsd-rest-server --http-host=127.0.0.1 --http-pport=8080 --statsd-host=127.0.0
 ## Authentication
 
 Token must be encrypted with secret, specifier in passed in `jwt-secret` of server. Token sends to server in `X-JWT-Token` header. If server started without passing JWT sectet in option `jwt-secret` then requests to server accepred without authentication.
+
+## Rest resources
+
+### Heartmeat
+GET /heartbeat
+If server working, it respondss with `OK`
+
+# Count
+POST /count/{key}
+X-JWT-Token: {tokenString}
+delta=1&sampleRate=1
+
+# Gauge
+POST /gauge/{key}
+X-JWT-Token: {tokenString}
+value=1
+
+# Timing
+POST /timing/{key}
+X-JWT-Token: {tokenString}
+time=1234567&sampleRate=1
+
+# Set
+POST /set/{key}
+X-JWT-Token: {tokenString}
+value=1
