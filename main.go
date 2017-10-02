@@ -31,7 +31,7 @@ var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
 
 // statsd client
-var statsdClient statsd.StatsdClient
+var statsdClient statsd.Client
 
 func main() {
 	// get flags
@@ -87,7 +87,7 @@ func main() {
 	).Methods("POST")
 
 	// Create a new StatsD connection
-	statsdClient = *statsd.New(*statsdHost, *statsdPort)
+	statsdClient = *statsd.NewClient(*statsdHost, *statsdPort)
 	statsdClient.SetAutoflush(true)
 	statsdClient.Open()
 

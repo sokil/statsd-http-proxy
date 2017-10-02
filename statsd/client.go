@@ -14,8 +14,8 @@ const metricTypeGauge = 'g';
 const metricTypeTiming = 't';
 const metricTypeSet = 's';
 
-// The StatsdClient type
-type StatsdClient struct {
+// The Client type
+type Client struct {
 	host      string
 	port      int
 	conn      net.Conn // UDP connection to StatsD server
@@ -24,9 +24,9 @@ type StatsdClient struct {
 	autoflush bool // send metrics on every call
 }
 
-// Factory method to create new StatsD client
-func New(host string, port int) *StatsdClient {
-	client := StatsdClient {
+// New StatsD client
+func NewClient(host string, port int) *Client {
+	client := Client{
 		host: host,
 		port: port,
 		rand: rand.New(rand.NewSource(time.Now().Unix())),
@@ -36,7 +36,7 @@ func New(host string, port int) *StatsdClient {
 }
 
 // Open UDP connection to statsd server
-func (client *StatsdClient) Open() {
+func (client *Client) Open() {
 	connectionString := fmt.Sprintf("%s:%d", client.host, client.port)
 	conn, err := net.Dial("udp", connectionString)
 	if err != nil {
@@ -47,19 +47,19 @@ func (client *StatsdClient) Open() {
 }
 
 // Close UDP connection to statsd server
-func (client *StatsdClient) Close() {
+func (client *Client) Close() {
 	client.conn.Close()
 }
 
-// Enable/disable buffered mode
+// SetAutoflush enables/disables buffered mode
 // In buffered mode requires manual call of Flush()
 // In autoflush mode message sends to server on every call
-func (client *StatsdClient) SetAutoflush(autoflush bool) {
+func (client *Client) SetAutoflush(autoflush bool) {
 	client.autoflush = autoflush
 }
 
 // Timing track in milliseconds with sampling
-func (client *StatsdClient) Timing(key string, time int64, sampleRate float32) {
+func (client *Client) Timing(key string, time int64, sampleRate float32) {
 	metricValue := fmt.Sprintf("%d|%s", time, metricTypeTiming)
 	if sampleRate < 1 {
 		if (client.isSendAcceptedBySampleRate(sampleRate)) {
@@ -75,7 +75,7 @@ func (client *StatsdClient) Timing(key string, time int64, sampleRate float32) {
 }
 
 // Count tack
-func (client *StatsdClient) Count(key string, delta int, sampleRate float32) {
+func (client *Client) Count(key string, delta int, sampleRate float32) {
 	metricValue := fmt.Sprintf("%d|%s", delta, metricTypeCount)
 	if sampleRate < 1 {
 		if (client.isSendAcceptedBySampleRate(sampleRate)) {
@@ -91,7 +91,7 @@ func (client *StatsdClient) Count(key string, delta int, sampleRate float32) {
 }
 
 // Gauge track
-func (client *StatsdClient) Gauge(key string, value int) {
+func (client *Client) Gauge(key string, value int) {
 	metricValue := fmt.Sprintf("%d|%s", value, metricTypeGauge)
 	client.keyBuffer[key] = metricValue
 	if client.autoflush {
@@ -100,7 +100,7 @@ func (client *StatsdClient) Gauge(key string, value int) {
 }
 
 // Set tracking
-func (client *StatsdClient) Set(key string, value int) {
+func (client *Client) Set(key string, value int) {
 	metricValue := fmt.Sprintf("%d|%s", value, metricTypeSet)
 	client.keyBuffer[key] = metricValue
 	if client.autoflush {
@@ -109,7 +109,7 @@ func (client *StatsdClient) Set(key string, value int) {
 }
 
 // Check if acceptable by sample rate
-func (client *StatsdClient) isSendAcceptedBySampleRate(sampleRate float32) bool {
+func (client *Client) isSendAcceptedBySampleRate(sampleRate float32) bool {
 	if sampleRate >= 1 {
 		return true
 	}
@@ -117,8 +117,8 @@ func (client *StatsdClient) isSendAcceptedBySampleRate(sampleRate float32) bool 
 	return randomNumber <= sampleRate
 }
 
-// Sends data to udp statsd daemon
-func (client *StatsdClient) Flush() {
+// flush data to statsd daemon by UDP
+func (client *Client) Flush() {
 	// prepare metric packet
 	metricPacketArray := make([]string, len(client.keyBuffer))
 	for key, metricValue := range client.keyBuffer {
