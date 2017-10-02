@@ -1,17 +1,17 @@
 package main
 
 import (
-	"time"
-	"net/http"
-	"log"
+	"./statsd"
 	"flag"
 	"fmt"
-	"os"
-	"io/ioutil"
-	"strconv"
-	"github.com/gorilla/mux"
-	"./statsd"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"os"
+	"strconv"
+	"time"
 )
 
 const DEFAULT_HTTP_HOST = "127.0.0.1"
@@ -52,11 +52,11 @@ func main() {
 	log.Printf("Starting HTTP server %s", httpAddress)
 
 	// create http server
-	s := &http.Server {
-		Addr: httpAddress,
-		Handler: router,
-		ReadTimeout: 10 * time.Second,
-		WriteTimeout: 10 * time.Second,
+	s := &http.Server{
+		Addr:           httpAddress,
+		Handler:        router,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
@@ -156,7 +156,7 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var delta int = 1;
+	var delta int = 1
 	deltaPostFormValue := r.PostFormValue("delta")
 	if deltaPostFormValue != "" {
 		var err error
@@ -188,7 +188,7 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var value int = 1;
+	var value int = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
 		var err error
@@ -234,7 +234,7 @@ func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var value int = 1;
+	var value int = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
 		var err error
