@@ -34,7 +34,7 @@ Token must be encrypted with secret, specifier in passed in `jwt-secret` of serv
 ```
 GET /heartbeat
 ```
-If server working, it respondss with `OK`
+If server working, it responds with `OK`
 
 ### Count
 ```
