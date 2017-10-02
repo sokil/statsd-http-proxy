@@ -14,19 +14,19 @@ import (
 	"time"
 )
 
-const default_http_host = "127.0.0.1"
-const default_http_port = 80
+const defaultHTTPHost = "127.0.0.1"
+const defaultHTTPPort = 80
 
-const default_statsd_host = "127.0.0.1"
-const default_statsd_port = 8125
+const defaultStatsDHost = "127.0.0.1"
+const defaultStatsDPort = 8125
 
-const jwt_header_name = "X-JWT-Token"
+const jwtHeaderName = "X-JWT-Token"
 
 // declare command line options
-var httpHost = flag.String("http-host", default_http_host, "HTTP Host")
-var httpPort = flag.Int("http-port", default_http_port, "HTTP Port")
-var statsdHost = flag.String("statsd-host", default_statsd_host, "StatsD Host")
-var statsdPort = flag.Int("statsd-port", default_statsd_port, "StatsD Port")
+var httpHost = flag.String("http-host", defaultHTTPHost, "HTTP Host")
+var httpPort = flag.Int("http-port", defaultHTTPPort, "HTTP Port")
+var statsdHost = flag.String("statsd-host", defaultStatsDHost, "StatsD Host")
+var statsdPort = flag.Int("statsd-port", defaultStatsDPort, "StatsD Port")
 var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
 
@@ -120,7 +120,7 @@ func validateJWT(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 		} else {
 			// get JWT
-			tokenString := r.Header.Get(jwt_header_name)
+			tokenString := r.Header.Get(jwtHeaderName)
 			if tokenString == "" {
 				http.Error(w, "Token not specified", 401)
 				return
@@ -156,7 +156,7 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var delta int = 1
+	var delta = 1
 	deltaPostFormValue := r.PostFormValue("delta")
 	if deltaPostFormValue != "" {
 		var err error
@@ -188,7 +188,7 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var value int = 1
+	var value = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
 		var err error
@@ -234,7 +234,7 @@ func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 	key := vars["key"]
 
 	// get delta
-	var value int = 1
+	var value = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
 		var err error

@@ -9,10 +9,10 @@ import (
 	"strings"
 )
 
-const metric_type_count = 'c';
-const metric_type_gauge = 'g';
-const metric_type_timing = 't';
-const metric_type_set = 's';
+const metricTypeCount = 'c';
+const metricTypeGauge = 'g';
+const metricTypeTiming = 't';
+const metricTypeSet = 's';
 
 // The StatsdClient type
 type StatsdClient struct {
@@ -60,7 +60,7 @@ func (client *StatsdClient) SetAutoflush(autoflush bool) {
 
 // Timing track in milliseconds with sampling
 func (client *StatsdClient) Timing(key string, time int64, sampleRate float32) {
-	metricValue := fmt.Sprintf("%d|%s", time, metric_type_timing)
+	metricValue := fmt.Sprintf("%d|%s", time, metricTypeTiming)
 	if sampleRate < 1 {
 		if (client.isSendAcceptedBySampleRate(sampleRate)) {
 			metricValue = fmt.Sprintf("%s|@%f", metricValue, sampleRate)
@@ -76,7 +76,7 @@ func (client *StatsdClient) Timing(key string, time int64, sampleRate float32) {
 
 // Count tack
 func (client *StatsdClient) Count(key string, delta int, sampleRate float32) {
-	metricValue := fmt.Sprintf("%d|%s", delta, metric_type_count)
+	metricValue := fmt.Sprintf("%d|%s", delta, metricTypeCount)
 	if sampleRate < 1 {
 		if (client.isSendAcceptedBySampleRate(sampleRate)) {
 			metricValue = fmt.Sprintf("%s|@%f", metricValue, sampleRate)
@@ -92,7 +92,7 @@ func (client *StatsdClient) Count(key string, delta int, sampleRate float32) {
 
 // Gauge track
 func (client *StatsdClient) Gauge(key string, value int) {
-	metricValue := fmt.Sprintf("%d|%s", value, metric_type_gauge)
+	metricValue := fmt.Sprintf("%d|%s", value, metricTypeGauge)
 	client.keyBuffer[key] = metricValue
 	if client.autoflush {
 		client.Flush()
@@ -101,7 +101,7 @@ func (client *StatsdClient) Gauge(key string, value int) {
 
 // Set tracking
 func (client *StatsdClient) Set(key string, value int) {
-	metricValue := fmt.Sprintf("%d|%s", value, metric_type_set)
+	metricValue := fmt.Sprintf("%d|%s", value, metricTypeSet)
 	client.keyBuffer[key] = metricValue
 	if client.autoflush {
 		client.Flush()
