@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"net"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -16,12 +17,13 @@ const metricTypeSet = "s"
 
 // The Client type
 type Client struct {
-	host      string
-	port      int
-	conn      net.Conn          // UDP connection to StatsD server
-	rand      *rand.Rand        // rand generator to skip messages by sample rate
-	keyBuffer map[string]string // array of messages to send
-	autoflush bool              // send metrics on every call
+	host          string
+	port          int
+	conn          net.Conn          // UDP connection to StatsD server
+	rand          *rand.Rand        // rand generator to skip messages by sample rate
+	keyBuffer     map[string]string // array of messages to send
+	keyBufferLock sync.RWMutex      // mutex to lock buffer of keys
+	autoflush     bool              // send metrics on every call
 }
 
 // New StatsD client
@@ -68,10 +70,8 @@ func (client *Client) Timing(key string, time int64, sampleRate float32) {
 			return
 		}
 	}
-	client.keyBuffer[key] = metricValue
-	if client.autoflush {
-		client.Flush()
-	}
+
+	client.addToBuffer(key, metricValue)
 }
 
 // Count tack
@@ -84,25 +84,30 @@ func (client *Client) Count(key string, delta int, sampleRate float32) {
 			return
 		}
 	}
-	client.keyBuffer[key] = metricValue
-	if client.autoflush {
-		client.Flush()
-	}
+
+	client.addToBuffer(key, metricValue)
 }
 
 // Gauge track
 func (client *Client) Gauge(key string, value int) {
 	metricValue := fmt.Sprintf("%d|%s", value, metricTypeGauge)
-	client.keyBuffer[key] = metricValue
-	if client.autoflush {
-		client.Flush()
-	}
+	client.addToBuffer(key, metricValue)
 }
 
 // Set tracking
 func (client *Client) Set(key string, value int) {
 	metricValue := fmt.Sprintf("%d|%s", value, metricTypeSet)
+	client.addToBuffer(key, metricValue)
+}
+
+// add to buffer and flush if auto flush enabled
+func (client *Client) addToBuffer(key string, metricValue string) {
+	// add key
+	client.keyBufferLock.Lock()
 	client.keyBuffer[key] = metricValue
+	client.keyBufferLock.Unlock()
+
+	// flush
 	if client.autoflush {
 		client.Flush()
 	}
@@ -117,14 +122,25 @@ func (client *Client) isSendAcceptedBySampleRate(sampleRate float32) bool {
 	return randomNumber <= sampleRate
 }
 
-// flush data to statsd daemon by UDP
+// flush buffer to statsd daemon by UDP
 func (client *Client) Flush() {
 	// prepare metric packet
 	metricPacketArray := make([]string, len(client.keyBuffer))
+
+	// lock
+	client.keyBufferLock.Lock()
+
+	// build packet
 	for key, metricValue := range client.keyBuffer {
 		metricPacketArray = append(metricPacketArray, fmt.Sprintf("%s:%s", key, metricValue))
 	}
 	metricPacket := strings.Join(metricPacketArray, "|")
+
+	// clear key buffer
+	client.keyBuffer = make(map[string]string)
+
+	// lock
+	client.keyBufferLock.Unlock()
 
 	// send metric packet
 	_, err := fmt.Fprintf(client.conn, metricPacket)

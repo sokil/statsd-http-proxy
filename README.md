@@ -8,6 +8,7 @@ This server is a HTTP proxy to UDP connection. Usefull for sending tracking to S
 ## Usefull resources
 * [https://github.com/etsy/statsd](https://github.com/etsy/statsd) - StatsD sources
 * [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
+* [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
 
 ## Installation
 
@@ -21,7 +22,7 @@ go build
 
 Server options:
 ```
-statsd-rest-server --http-host=127.0.0.1 --http-pport=8080 --statsd-host=127.0.0.1 --statsd-port=8125 --jwt-secret=somesecret
+statsd-rest-server --http-host=127.0.0.1 --http-port=8080 --statsd-host=127.0.0.1 --statsd-port=8125 --jwt-secret=somesecret
 ```
 
 ## Authentication
@@ -81,3 +82,9 @@ value=1
 | Parameter  | Description                          | Default value                      |
 |------------|--------------------------------------|------------------------------------|
 | value      | Value                                | Optional. Default 1                |
+
+## Benchmark
+
+```
+siege -c 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGF0c2QtcmVzdC1zZXJ2ZXIiLCJpYXQiOjE1MDY5NzI1ODAsImV4cCI6MTg4NTY2Mzc4MCwiYXVkIjoiaHR0cHM6Ly9naXRodWIuY29tL3Nva2lsL3N0YXRzZC1yZXN0LXNlcnZlciIsInN1YiI6InNva2lsIn0.sOb0ccRBnN1u9IP2jhJrcNod14G5t-jMHNb_fsWov5c' "http://127.0.0.1:8080/count/a.b.c.d POST"
+```
