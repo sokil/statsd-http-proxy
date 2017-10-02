@@ -55,8 +55,8 @@ func main() {
 	s := &http.Server{
 		Addr:           httpAddress,
 		Handler:        router,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		ReadTimeout:    1 * time.Second,
+		WriteTimeout:   1 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
