@@ -30,7 +30,7 @@ Token must be encrypted with secret, specifier in passed in `jwt-secret` of serv
 
 ## Rest resources
 
-### Heartmeat
+### Heartbeat
 GET /heartbeat
 If server working, it respondss with `OK`
 
