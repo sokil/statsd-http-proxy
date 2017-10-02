@@ -14,19 +14,19 @@ import (
 	"time"
 )
 
-const DEFAULT_HTTP_HOST = "127.0.0.1"
-const DEFAULT_HTTP_PORT = 80
+const default_http_host = "127.0.0.1"
+const default_http_port = 80
 
-const DEFAULT_STATSD_HOST = "127.0.0.1"
-const DEFAULT_STATSD_PORT = 8125
+const default_statsd_host = "127.0.0.1"
+const default_statsd_port = 8125
 
-const JWT_HEADER_NAME = "X-JWT-Token"
+const jwt_header_name = "X-JWT-Token"
 
 // declare command line options
-var httpHost = flag.String("http-host", DEFAULT_HTTP_HOST, "HTTP Host")
-var httpPort = flag.Int("http-port", DEFAULT_HTTP_PORT, "HTTP Port")
-var statsdHost = flag.String("statsd-host", DEFAULT_STATSD_HOST, "StatsD Host")
-var statsdPort = flag.Int("statsd-port", DEFAULT_STATSD_PORT, "StatsD Port")
+var httpHost = flag.String("http-host", default_http_host, "HTTP Host")
+var httpPort = flag.Int("http-port", default_http_port, "HTTP Port")
+var statsdHost = flag.String("statsd-host", default_statsd_host, "StatsD Host")
+var statsdPort = flag.Int("statsd-port", default_statsd_port, "StatsD Port")
 var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
 
@@ -120,7 +120,7 @@ func validateJWT(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 		} else {
 			// get JWT
-			tokenString := r.Header.Get(JWT_HEADER_NAME)
+			tokenString := r.Header.Get(jwt_header_name)
 			if tokenString == "" {
 				http.Error(w, "Token not specified", 401)
 				return
