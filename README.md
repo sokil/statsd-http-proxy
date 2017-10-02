@@ -34,22 +34,22 @@ Token must be encrypted with secret, specifier in passed in `jwt-secret` of serv
 GET /heartbeat
 If server working, it respondss with `OK`
 
-# Count
+### Count
 POST /count/{key}
 X-JWT-Token: {tokenString}
 delta=1&sampleRate=1
 
-# Gauge
+### Gauge
 POST /gauge/{key}
 X-JWT-Token: {tokenString}
 value=1
 
-# Timing
+### Timing
 POST /timing/{key}
 X-JWT-Token: {tokenString}
 time=1234567&sampleRate=1
 
-# Set
+### Set
 POST /set/{key}
 X-JWT-Token: {tokenString}
 value=1
