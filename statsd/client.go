@@ -102,14 +102,16 @@ func (client *Client) Set(key string, value int) {
 
 // add to buffer and flush if auto flush enabled
 func (client *Client) addToBuffer(key string, metricValue string) {
-	// add key
-	client.keyBufferLock.Lock()
-	client.keyBuffer[key] = metricValue
-	client.keyBufferLock.Unlock()
-
 	// flush
 	if client.autoflush {
-		client.Flush()
+		// send metric now
+		client.send(fmt.Sprintf("%s:%s", key, metricValue))
+	} else {
+		// add metric to buffer for next manual flush
+		client.keyBufferLock.Lock()
+		client.keyBuffer[key] = metricValue
+		client.keyBufferLock.Unlock()
+
 	}
 }
 
@@ -124,6 +126,11 @@ func (client *Client) isSendAcceptedBySampleRate(sampleRate float32) bool {
 
 // flush buffer to statsd daemon by UDP
 func (client *Client) Flush() {
+	// check if buffer has metrics
+	if len(client.keyBuffer) == 0 {
+		return
+	}
+
 	// prepare metric packet
 	var metricPacketArray []string
 
@@ -142,6 +149,12 @@ func (client *Client) Flush() {
 	// lock
 	client.keyBufferLock.Unlock()
 
+	// send packet
+	client.send(metricPacket)
+}
+
+// Send StatsD packet
+func (client *Client) send(metricPacket string) {
 	// send metric packet
 	_, err := fmt.Fprintf(client.conn, metricPacket)
 	if err != nil {
