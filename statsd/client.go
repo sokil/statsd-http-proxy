@@ -105,7 +105,7 @@ func (client *Client) addToBuffer(key string, metricValue string) {
 	// flush
 	if client.autoflush {
 		// send metric now
-		client.send(fmt.Sprintf("%s:%s", key, metricValue))
+		go client.send(fmt.Sprintf("%s:%s", key, metricValue))
 	} else {
 		// add metric to buffer for next manual flush
 		client.keyBufferLock.Lock()
@@ -150,7 +150,7 @@ func (client *Client) Flush() {
 	client.keyBufferLock.Unlock()
 
 	// send packet
-	client.send(metricPacket)
+	go client.send(metricPacket)
 }
 
 // Send StatsD packet
