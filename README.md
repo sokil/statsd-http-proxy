@@ -31,25 +31,53 @@ Token must be encrypted with secret, specifier in passed in `jwt-secret` of serv
 ## Rest resources
 
 ### Heartbeat
+```
 GET /heartbeat
+```
 If server working, it respondss with `OK`
 
 ### Count
+```
 POST /count/{key}
 X-JWT-Token: {tokenString}
 delta=1&sampleRate=1
+```
+
+| Parameter  | Description                          | Default value                      |
+|------------|--------------------------------------|------------------------------------|
+| delta      | Value of delta. Negative to decrease | Optional. Default 1                |
+| sampleRate | Sample rate to skip metrics          | Optional. Default to 1: accept all |
 
 ### Gauge
+```
 POST /gauge/{key}
 X-JWT-Token: {tokenString}
 value=1
+```
+
+| Parameter  | Description                          | Default value                      |
+|------------|--------------------------------------|------------------------------------|
+| value      | Value                                | Optional. Default 1                |
 
 ### Timing
+```
 POST /timing/{key}
 X-JWT-Token: {tokenString}
 time=1234567&sampleRate=1
+```
+
+| Parameter  | Description                          | Default value                      |
+|------------|--------------------------------------|------------------------------------|
+| time       | Time in milloiseconds                | Required                           |
+| sampleRate | Sample rate to skip metrics          | Optional. Default to 1: accept all |
 
 ### Set
+```
 POST /set/{key}
 X-JWT-Token: {tokenString}
 value=1
+```
+
+| Parameter  | Description                          | Default value                      |
+|------------|--------------------------------------|------------------------------------|
+| value      | Value                                | Optional. Default 1                |
