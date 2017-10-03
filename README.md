@@ -14,8 +14,7 @@ This server is a HTTP proxy to UDP connection. Usefull for sending tracking to S
 
 ```
 got clone git@github.com:sokil/statsd-rest-server.git
-go get
-go build
+make build
 ```
 
 ## Useage
