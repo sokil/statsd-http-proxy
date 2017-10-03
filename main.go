@@ -104,10 +104,9 @@ func validateCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			w.Header().Add("Access-Control-Allow-Headers", "X-Requested-With, Origin, Accept, Content-Type, Authentication")
+			w.Header().Add("Access-Control-Allow-Headers", jwtHeaderName + ", X-Requested-With, Origin, Accept, Content-Type, Authentication")
 			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
 			w.Header().Add("Access-Control-Allow-Origin", origin)
-			w.Header().Add("Access-Control-Expose-Headers", "X-Sentry-Error, Retry-After")
 		}
 		next.ServeHTTP(w, r)
 	})
