@@ -4,6 +4,7 @@
 *.so
 *.dylib
 statsd-rest-server
+bin/
 
 # third party components
 src
