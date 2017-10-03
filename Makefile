@@ -1,5 +1,7 @@
 GOPATH=$(CURDIR)
 
+# cross-compile rules: https://golang.org/doc/install/source
+
 default: build
 
 # install dependencies
