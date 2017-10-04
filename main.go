@@ -1,11 +1,11 @@
 package main
 
 import (
-	"./statsd"
 	"flag"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
+	"github.com/sokil/go-statsd-client"
 	"io/ioutil"
 	"log"
 	"net/http"
