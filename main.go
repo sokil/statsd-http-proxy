@@ -47,19 +47,6 @@ func main() {
 	// create HTTP router
 	router := mux.NewRouter().StrictSlash(true)
 
-	// get server address to bind
-	httpAddress := fmt.Sprintf("%s:%d", *httpHost, *httpPort)
-	log.Printf("Starting HTTP server %s", httpAddress)
-
-	// create http server
-	s := &http.Server{
-		Addr:           httpAddress,
-		Handler:        router,
-		ReadTimeout:    1 * time.Second,
-		WriteTimeout:   1 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-
 	// register http request handlers
 	router.Handle(
 		"/heartbeat",
@@ -90,6 +77,19 @@ func main() {
 	statsdClient = statsd.NewClient(*statsdHost, *statsdPort)
 	statsdClient.SetAutoflush(true)
 	statsdClient.Open()
+
+	// get server address to bind
+	httpAddress := fmt.Sprintf("%s:%d", *httpHost, *httpPort)
+	log.Printf("Starting HTTP server %s", httpAddress)
+
+	// create http server
+	s := &http.Server{
+		Addr:           httpAddress,
+		Handler:        router,
+		ReadTimeout:    1 * time.Second,
+		WriteTimeout:   1 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
 
 	// start http server
 	err := s.ListenAndServe()
@@ -145,10 +145,12 @@ func validateJWT(next http.Handler) http.Handler {
 	})
 }
 
+// Handle heartbeat request
 func handleHeartbeatRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprint(w, "OK")
 }
 
+// Handle StatsD Count request
 func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
@@ -181,6 +183,7 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	statsdClient.Count(key, delta, float32(sampleRate))
 }
 
+// Handle StatsD Gauge request
 func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
@@ -201,6 +204,7 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	statsdClient.Gauge(key, value)
 }
 
+// Handle StatsD Timing request
 func handleTimingRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
@@ -227,6 +231,7 @@ func handleTimingRequest(w http.ResponseWriter, r *http.Request) {
 	statsdClient.Timing(key, time, float32(sampleRate))
 }
 
+// Handle StatsD Set request
 func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
