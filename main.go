@@ -157,14 +157,14 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	// get delta
-	var delta = 1
-	deltaPostFormValue := r.PostFormValue("delta")
-	if deltaPostFormValue != "" {
+	// get count value
+	var value = 1
+	valuePostFormValue := r.PostFormValue("value")
+	if valuePostFormValue != "" {
 		var err error
-		delta, err = strconv.Atoi(deltaPostFormValue)
+		value, err = strconv.Atoi(valuePostFormValue)
 		if err != nil {
-			http.Error(w, "Invalid delta specified", 400)
+			http.Error(w, "Invalid value specified", 400)
 		}
 	}
 
@@ -181,7 +181,7 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// send request
-	statsdClient.Count(key, delta, float32(sampleRate))
+	statsdClient.Count(key, value, float32(sampleRate))
 }
 
 // Handle StatsD Gauge request
