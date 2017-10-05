@@ -82,6 +82,18 @@ value=1
 |------------|--------------------------------------|------------------------------------|
 | value      | Value                                | Optional. Default 1                |
 
+## Response
+
+Server sends `200 OK` if send success, even StatsD server is down.
+
+Other HTTP status codes:
+
+| CODE             | Description                        |
+|------------------|------------------------------------|
+| 401 Unauthorized | Token not sent                     |
+| 403 Forbidden    | Token invalid/expired              |
+| 404 Not found    | Invalid url requested              |
+
 ## Benchmark
 
 Machine for benchmarking:
