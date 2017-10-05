@@ -1,7 +1,18 @@
 GOPATH=$(CURDIR)
 
-# cross-compile rules: https://golang.org/doc/install/source
+VERSION=`git describe --tags`
+BUILD_NUMBER=`git rev-parse HEAD`
+BUILD_DATE=`date +%Y-%m-%d-%H:%M`
 
+# go compiler flags
+LDFLAGS=-ldflags "-X main.Version=$(VERSION) -X main.BuildNumber=$(BUILD_NUMBER) -X main.BuildDate=$(BUILD_DATE)"
+LDFLAGS_COMPRESSED=-ldflags "-s -w -X main.Version=$(VERSION) -X main.BuildNumber=$(BUILD_NUMBER) -X main.BuildDate=$(BUILD_DATE)"
+
+#gccgo compiler flags
+GCCGOFLAGS=-gccgoflags "-march=native -O3"
+GCCGOFLAGS_GOLD=-gccgoflags "-march=native -O3 -fuse-ld=gold"
+
+# default task
 default: build
 
 # install dependencies
@@ -10,22 +21,25 @@ deps:
 
 # build with go compiler
 build: deps
-	GOPATH=$(GOPATH) go build -a -o $(CURDIR)/bin/statsd -o $(CURDIR)/bin/statsd-rest-server
+	GOPATH=$(GOPATH) go build -a $(LDFLAGS) -o $(CURDIR)/bin/statsd-rest-server
 
 
 # build with go compiler and link optiomizations
 build-shrink: deps
-	GOPATH=$(GOPATH) go build -a -ldflags="-s -w" -o $(CURDIR)/bin/statsd-rest-server-shrink
+	GOPATH=$(GOPATH) go build -a $(LDFLAGS_COMPRESSED) -o $(CURDIR)/bin/statsd-rest-server-shrink
 
 # build with gccgo compiler
 # Require to install gccgo
 build-gccgo: deps
-	GOPATH=$(GOPATH) go build -a -compiler gccgo -gccgoflags "-march=native -O3" -o $(CURDIR)/bin/statsd-rest-server-gccgo
+	GOPATH=$(GOPATH) go build -a -compiler gccgo $(GCCGOFLAGS) -o $(CURDIR)/bin/statsd-rest-server-gccgo
 
 # build with gccgo compiler and gold linker
 # Require to install gccgo
 build-gccgo-gold: deps
-	GOPATH=$(GOPATH) go build -a -compiler gccgo -gccgoflags "-march=native -O3 -fuse-ld=gold" -o $(CURDIR)/bin/statsd-rest-server-gccgo-gold
+	GOPATH=$(GOPATH) go build -a -compiler gccgo $(GCCGOFLAGS_GOLD) -o $(CURDIR)/bin/statsd-rest-server-gccgo-gold
+
+# build all
+build-all: build build-shrink build-gccgo build-gccgo-gold
 
 # clean build
 clean:

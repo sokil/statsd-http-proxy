@@ -14,12 +14,20 @@ import (
 	"time"
 )
 
+// App params
+var Version = "Unknown";
+var BuildNumber = "Unknown";
+var BuildDate = "Unknown";
+
+// HTTP connection params
 const defaultHTTPHost = "127.0.0.1"
 const defaultHTTPPort = 80
 
+// StatsD connection params
 const defaultStatsDHost = "127.0.0.1"
 const defaultStatsDPort = 8125
 
+// JWT params
 const jwtHeaderName = "X-JWT-Token"
 
 // declare command line options
@@ -29,6 +37,7 @@ var statsdHost = flag.String("statsd-host", defaultStatsDHost, "StatsD Host")
 var statsdPort = flag.Int("statsd-port", defaultStatsDPort, "StatsD Port")
 var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
+var version = flag.Bool("version", false, "Show version")
 
 // statsd client
 var statsdClient *statsd.Client
@@ -36,6 +45,13 @@ var statsdClient *statsd.Client
 func main() {
 	// get flags
 	flag.Parse()
+
+
+	// show version and exit
+	if *version == true {
+		showVersion()
+		os.Exit(0)
+	}
 
 	// configure verbosity of logging
 	if *verbose == true {
@@ -251,4 +267,13 @@ func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 
 	// send request
 	statsdClient.Set(key, value)
+}
+
+func showVersion() {
+	fmt.Printf(
+		"StatsD HTTP Proxy v.%s, build %s from %s\n",
+		Version,
+		BuildNumber,
+		BuildDate,
+	)
 }
