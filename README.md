@@ -40,12 +40,12 @@ If server working, it responds with `OK`
 ```
 POST /count/{key}
 X-JWT-Token: {tokenString}
-delta=1&sampleRate=1
+value=1&sampleRate=1
 ```
 
 | Parameter  | Description                          | Default value                      |
 |------------|--------------------------------------|------------------------------------|
-| delta      | Value of delta. Negative to decrease | Optional. Default 1                |
+| value      | Value. Negative to decrease          | Optional. Default 1                |
 | sampleRate | Sample rate to skip metrics          | Optional. Default to 1: accept all |
 
 ### Gauge
