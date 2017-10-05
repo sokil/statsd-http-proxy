@@ -90,6 +90,7 @@ Other HTTP status codes:
 
 | CODE             | Description                        |
 |------------------|------------------------------------|
+| 400 Bad Request  | Invalid paraameters specified      |
 | 401 Unauthorized | Token not sent                     |
 | 403 Forbidden    | Token invalid/expired              |
 | 404 Not found    | Invalid url requested              |
