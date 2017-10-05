@@ -77,6 +77,7 @@ func main() {
 	statsdClient = statsd.NewClient(*statsdHost, *statsdPort)
 	statsdClient.SetAutoflush(true)
 	statsdClient.Open()
+	defer statsdClient.Close()
 
 	// get server address to bind
 	httpAddress := fmt.Sprintf("%s:%d", *httpHost, *httpPort)
