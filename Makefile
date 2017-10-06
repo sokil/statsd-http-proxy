@@ -44,5 +44,4 @@ build-all: build build-shrink build-gccgo build-gccgo-gold
 # clean build
 clean:
 	rm -rf ./bin
-	rm statsd-rest-server
 	go clean
