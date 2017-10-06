@@ -1,5 +1,8 @@
 GOPATH=$(CURDIR)
 
+IS_GCCGO_INSTALLED=$(gccgo --version 2> /dev/null)
+
+# build version
 VERSION=`git describe --tags`
 BUILD_NUMBER=`git rev-parse HEAD`
 BUILD_DATE=`date +%Y-%m-%d-%H:%M`
@@ -19,6 +22,11 @@ default: build
 deps:
 	GOPATH=$(GOPATH) go get -d ./...
 
+deps-gccgo:
+ifndef IS_GCCGO_INSTALLED
+        $(error "gccgo not installed")
+endif
+
 # build with go compiler
 build: deps
 	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a $(LDFLAGS) -o $(CURDIR)/bin/statsd-rest-server
@@ -30,12 +38,12 @@ build-shrink: deps
 
 # build with gccgo compiler
 # Require to install gccgo
-build-gccgo: deps
+build-gccgo: deps deps-gccgo
 	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a -compiler gccgo $(GCCGOFLAGS) -o $(CURDIR)/bin/statsd-rest-server-gccgo
 
 # build with gccgo compiler and gold linker
 # Require to install gccgo
-build-gccgo-gold: deps
+build-gccgo-gold: deps deps-gccgo
 	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a -compiler gccgo $(GCCGOFLAGS_GOLD) -o $(CURDIR)/bin/statsd-rest-server-gccgo-gold
 
 # build all
