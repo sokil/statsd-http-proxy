@@ -95,6 +95,13 @@ Other HTTP status codes:
 | 403 Forbidden    | Token invalid/expired              |
 | 404 Not found    | Invalid url requested              |
 
+## Testing
+
+It is usefull for testing to start netcat UDP server, listening for connections and watch incoming metrics. To start server run:
+```
+nc -kluv localhost 8125
+```
+
 ## Benchmark
 
 Machine for benchmarking:
@@ -128,3 +135,5 @@ $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1Ni
   user    0m6.068s
   sys     0m38.440s
 ```
+
+
