@@ -21,7 +21,7 @@ deps:
 
 # build with go compiler
 build: deps
-	GOPATH=$(GOPATH) CGO_ENABLED=0  go build -a $(LDFLAGS) -o $(CURDIR)/bin/statsd-rest-server
+	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a $(LDFLAGS) -o $(CURDIR)/bin/statsd-rest-server
 
 
 # build with go compiler and link optiomizations
@@ -31,12 +31,12 @@ build-shrink: deps
 # build with gccgo compiler
 # Require to install gccgo
 build-gccgo: deps
-	GOPATH=$(GOPATH) go build -a -compiler gccgo $(GCCGOFLAGS) -o $(CURDIR)/bin/statsd-rest-server-gccgo
+	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a -compiler gccgo $(GCCGOFLAGS) -o $(CURDIR)/bin/statsd-rest-server-gccgo
 
 # build with gccgo compiler and gold linker
 # Require to install gccgo
 build-gccgo-gold: deps
-	GOPATH=$(GOPATH) go build -a -compiler gccgo $(GCCGOFLAGS_GOLD) -o $(CURDIR)/bin/statsd-rest-server-gccgo-gold
+	GOPATH=$(GOPATH) CGO_ENABLED=0 go build -a -compiler gccgo $(GCCGOFLAGS_GOLD) -o $(CURDIR)/bin/statsd-rest-server-gccgo-gold
 
 # build all
 build-all: build build-shrink build-gccgo build-gccgo-gold
