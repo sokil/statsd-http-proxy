@@ -5,7 +5,9 @@ dist: trusty
 addons:
   apt:
     packages:
-      - gccgo-multilib
+      - gccgo-6
+    sources:
+      - ubuntu-toolchain-r-test
 
 go:
   - 1.x
