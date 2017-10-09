@@ -3,7 +3,7 @@ language: go
 addons:
   apt:
     packages:
-      - gccgo-6
+      - gccgo-6-multilib
 
 go:
   - 1.x
