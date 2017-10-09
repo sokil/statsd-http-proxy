@@ -17,5 +17,6 @@ go:
 
 script:
   - gccgo-6 --version
+  - ln -s /usr/bin/gccgo-6 /usr/bin/gccgo
   - go get -d ./...
   - make build-all
