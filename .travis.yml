@@ -16,5 +16,6 @@ go:
   - master
 
 script:
+  - gccgo --version
   - go get -d ./...
   - make build-all
