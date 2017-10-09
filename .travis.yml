@@ -5,7 +5,7 @@ dist: trusty
 addons:
   apt:
     packages:
-      - gccgo-6-multilib
+      - gccgo-multilib
 
 go:
   - 1.x
