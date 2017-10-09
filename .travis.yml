@@ -1,0 +1,11 @@
+language: go
+
+go:
+  - 1.x
+  - 1.6
+  - 1.7.x
+  - master
+
+script:
+  - go get -d ./...
+  - make build-all
