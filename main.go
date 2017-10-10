@@ -91,7 +91,6 @@ func main() {
 
 	// Create a new StatsD connection
 	statsdClient = statsd.NewClient(*statsdHost, *statsdPort)
-	statsdClient.SetAutoflush(true)
 	statsdClient.Open()
 	defer statsdClient.Close()
 
