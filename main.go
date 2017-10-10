@@ -14,9 +14,16 @@ import (
 	"time"
 )
 
-// App params
+// Version is a current git commit hash and tag
+// Injected by compilation flag
 var Version = "Unknown"
+
+// BuildNumber is a current commit hash
+// Injected by compilation flag
 var BuildNumber = "Unknown"
+
+// BuildDate is a date of build
+// Injected by compilation flag
 var BuildDate = "Unknown"
 
 // HTTP connection params
