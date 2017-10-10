@@ -15,9 +15,9 @@ import (
 )
 
 // App params
-var Version = "Unknown";
-var BuildNumber = "Unknown";
-var BuildDate = "Unknown";
+var Version = "Unknown"
+var BuildNumber = "Unknown"
+var BuildDate = "Unknown"
 
 // HTTP connection params
 const defaultHTTPHost = "127.0.0.1"
@@ -45,7 +45,6 @@ var statsdClient *statsd.Client
 func main() {
 	// get flags
 	flag.Parse()
-
 
 	// show version and exit
 	if *version == true {
@@ -120,7 +119,7 @@ func validateCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			w.Header().Add("Access-Control-Allow-Headers", jwtHeaderName + ", X-Requested-With, Origin, Accept, Content-Type, Authentication")
+			w.Header().Add("Access-Control-Allow-Headers", jwtHeaderName+", X-Requested-With, Origin, Accept, Content-Type, Authentication")
 			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
 			w.Header().Add("Access-Control-Allow-Origin", origin)
 		}
