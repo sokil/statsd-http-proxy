@@ -68,6 +68,11 @@ X-JWT-Token: {tokenString}
 shift=-1
 ```
 
+| Parameter  | Description                                | Default value                      |
+|------------|--------------------------------------------|------------------------------------|
+| value      | Value                                      | Optional. Default 1                |
+| shift      | Shift, relative to previously stored value | Optional                           |
+
 ### Timing
 ```
 POST /timing/{key}
