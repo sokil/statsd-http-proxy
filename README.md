@@ -52,7 +52,8 @@ value=1&sampleRate=1
 ### Gauge
 
 Gauge is an arbitrary value. If the gauge is not updated at the next flush, it will send the previous value.
-Gauge also may be set relatively to previously stored value.
+Gauge also may be set relatively to previously stored value. Is shift not set, then checked value. If
+value not sed, used default value equals 1.
 
 Absolute value:
 ```
