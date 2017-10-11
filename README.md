@@ -50,15 +50,23 @@ value=1&sampleRate=1
 | sampleRate | Sample rate to skip metrics          | Optional. Default to 1: accept all |
 
 ### Gauge
+
+Gauge is an arbitrary value. If the gauge is not updated at the next flush, it will send the previous value.
+Gauge also may be set relatively to previously stored value.
+
+Absolute value:
 ```
 POST /gauge/{key}
 X-JWT-Token: {tokenString}
 value=1
 ```
 
-| Parameter  | Description                          | Default value                      |
-|------------|--------------------------------------|------------------------------------|
-| value      | Value                                | Optional. Default 1                |
+Shift of previous value:
+```
+POST /gauge/{key}
+X-JWT-Token: {tokenString}
+shift=-1
+```
 
 ### Timing
 ```
@@ -114,7 +122,7 @@ Intel(R) Core(TM) i5-2450M CPU @ 2.50GHz Dual Core / 8 GB RAM
 Siege test:
 
 ```
-$ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGF0c2QtcmVzdC1zZXJ2ZXIiLCJpYXQiOjE1MDY5NzI1ODAsImV4cCI6MTg4NTY2Mzc4MCwiYXVkIjoiaHR0cHM6Ly9naXRodWIuY29tL3Nva2lsL3N0YXRzZC1yZXN0LXNlcnZlciIsInN1YiI6InNva2lsIn0.sOb0ccRBnN1u9IP2jhJrcNod14G5t-jMHNb_fsWov5c' "http://127.0.0.1:8080/count/a.b.c.d POST"
+$ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGF0c2QtcmVzdC1zZXJ2ZXIiLCJpYXQiOjE1MDY5NzI1ODAsImV4cCI6MTg4NTY2Mzc4MCwiYXVkIjoiaHR0cHM6Ly9naXRodWIuY29tL3Nva2lsL3N0YXRzZC1yZXN0LXNlcnZlciIsInN1YiI6InNva2lsIn0.sOb0ccRBnN1u9IP2jhJrcNod14G5t-jMHNb_fsWov5c' "http://127.0.0.1:8080/count/a.b.c.d POST value=42"
   ** SIEGE 4.0.2
   ** Preparing 255 concurrent users for battle.
   The server is now under siege...

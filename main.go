@@ -211,19 +211,35 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	// get delta
+	// get gauge shift
+	shiftPostFormValue := r.PostFormValue("shift")
+	if shiftPostFormValue != "" {
+		// get value
+		value, err := strconv.Atoi(shiftPostFormValue)
+		if err != nil {
+			http.Error(w, "Invalid gauge shift specified", 400)
+		}
+		// send request
+		statsdClient.GaugeShift(key, value)
+		return
+	}
+
+	// get gauge value
 	var value = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
+		// get value
 		var err error
 		value, err = strconv.Atoi(valuePostFormValue)
 		if err != nil {
-			http.Error(w, "Invalid delta specified", 400)
+			http.Error(w, "Invalid gauge value specified", 400)
 		}
 	}
 
-	// send request
+	// send gauge value request
 	statsdClient.Gauge(key, value)
+
+
 }
 
 // Handle StatsD Timing request
@@ -259,14 +275,14 @@ func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["key"]
 
-	// get delta
+	// get set value
 	var value = 1
 	valuePostFormValue := r.PostFormValue("value")
 	if valuePostFormValue != "" {
 		var err error
 		value, err = strconv.Atoi(valuePostFormValue)
 		if err != nil {
-			http.Error(w, "Invalid delta specified", 400)
+			http.Error(w, "Invalid set value specified", 400)
 		}
 	}
 
