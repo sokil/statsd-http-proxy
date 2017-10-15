@@ -26,5 +26,4 @@ RUN \
 
 # start service
 EXPOSE 80
-ENTRYPOINT ["/usr/local/bin/statsd-rest-server"]
-
+ENTRYPOINT ["/usr/local/bin/statsd-rest-server", "--http-host="]
