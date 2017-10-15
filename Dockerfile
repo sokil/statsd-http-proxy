@@ -25,5 +25,6 @@ RUN \
 	apt-get autoremove -y
 
 # start service
+EXPOSE 80
 ENTRYPOINT ["/usr/local/bin/statsd-rest-server"]
 
