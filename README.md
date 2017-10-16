@@ -18,7 +18,7 @@ got clone git@github.com:sokil/statsd-rest-server.git
 make build
 ```
 
-Also available Docker image:
+Also available [Docker image](https://hub.docker.com/r/sokil/statsd-rest-server/):
 
 ```
 docker run -p 80:80 sokil/statsd-rest-server:0.5.1 --verbose
