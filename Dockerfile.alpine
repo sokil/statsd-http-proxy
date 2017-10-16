@@ -1,0 +1,29 @@
+FROM alpine:3.6
+
+ENV VERSION=0.5.1
+
+RUN apk update && \
+	# install requirements
+    apk add --no-cache bash && \
+    apk add --no-cache --virtual .build-deps \
+	    ca-certificates \
+        make \
+        git \
+        wget \
+        go \
+        musl-dev && \
+	# dowload source
+	wget https://github.com/sokil/statsd-rest-server/archive/${VERSION}.tar.gz && \
+    tar -zxvf ${VERSION}.tar.gz && \
+    cd statsd-rest-server-${VERSION} && \
+    # make and install source
+    make build && \
+    chmod +x ./bin/statsd-rest-server && \
+    mv ./bin/statsd-rest-server /usr/local/bin && \
+    # clear
+	rm -rf statsd-rest-server-${VERSION} && \
+    apk del .build-deps
+
+# start service
+EXPOSE 80
+ENTRYPOINT ["/usr/local/bin/statsd-rest-server", "--http-host="]
