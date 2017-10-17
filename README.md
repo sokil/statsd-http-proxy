@@ -4,9 +4,11 @@ HTTP Server with REST interface to StatsD
 [![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-rest-server?2)](https://goreportcard.com/report/github.com/sokil/statsd-rest-server)
 [![Build Status](https://travis-ci.org/sokil/statsd-rest-server.svg?branch=master)](https://travis-ci.org/sokil/statsd-rest-server)
 
-This server is a HTTP proxy to UDP connection. Usefull for sending tracking to StatsD from frontend by AJAX. Authentication based on jwt token.
+This server is a HTTP proxy to UDP connection.
+Useful for sending metrics to StatsD from frontend by AJAX.
+Authentication based on JWT token.
 
-## Usefull resources
+## Useful resources
 * [https://github.com/etsy/statsd](https://github.com/etsy/statsd) - StatsD sources
 * [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
 * [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
@@ -22,12 +24,21 @@ make build
 
 Server options:
 ```
-statsd-rest-server --verbose --http-host=127.0.0.1 --http-port=8080 --statsd-host=127.0.0.1 --statsd-port=8125 --jwt-secret=somesecret
+statsd-rest-server \
+	--verbose \
+	--http-host=127.0.0.1 \
+	--http-port=8080 \
+	--statsd-host=127.0.0.1 \
+	--statsd-port=8125 \
+	--jwt-secret=somesecret
 ```
 
 ## Authentication
 
-Token must be encrypted with secret, specifier in passed in `jwt-secret` of server. Token sends to server in `X-JWT-Token` header. If server started without passing JWT sectet in option `jwt-secret` then requests to server accepred without authentication.
+Token must be encrypted with secret, specified in CLI parameter `jwt-secret` of server.
+Token sends to server in `X-JWT-Token` header.
+If JWT secret not configured in `jwt-secret` parameter on server start,
+then requests to server accepted without authentication.
 
 ## Rest resources
 
@@ -69,10 +80,10 @@ X-JWT-Token: {tokenString}
 shift=-1
 ```
 
-| Parameter  | Description                                | Default value                      |
-|------------|--------------------------------------------|------------------------------------|
-| value      | Value                                      | Optional. Default 1                |
-| shift      | Shift, relative to previously stored value | Optional                           |
+| Parameter  | Description                                     | Default value                      |
+|------------|-------------------------------------------------|------------------------------------|
+| value      | Integer value                                   | Optional. Default 1                |
+| shift      | Signed int, relative to previously stored value | Optional                           |
 
 ### Timing
 ```
@@ -81,10 +92,10 @@ X-JWT-Token: {tokenString}
 time=1234567&sampleRate=1
 ```
 
-| Parameter  | Description                          | Default value                      |
-|------------|--------------------------------------|------------------------------------|
-| time       | Time in milloiseconds                | Required                           |
-| sampleRate | Sample rate to skip metrics          | Optional. Default to 1: accept all |
+| Parameter  | Description                                   | Default value                      |
+|------------|-----------------------------------------------|------------------------------------|
+| time       | Time in milliseconds                          | Required                           |
+| sampleRate | Float sample rate to skip metrics from 0 to 1 | Optional. Default to 1: accept all |
 
 ### Set
 ```
@@ -95,7 +106,7 @@ value=1
 
 | Parameter  | Description                          | Default value                      |
 |------------|--------------------------------------|------------------------------------|
-| value      | Value                                | Optional. Default 1                |
+| value      | Integer value                                | Optional. Default 1                |
 
 ## Response
 
@@ -112,7 +123,9 @@ Other HTTP status codes:
 
 ## Testing
 
-It is usefull for testing to start netcat UDP server, listening for connections and watch incoming metrics. To start server run:
+It is useful for testing to start `netcat` UDP server,
+listening for connections and watch incoming metrics.
+To start server run:
 ```
 nc -kluv localhost 8125
 ```
@@ -152,5 +165,3 @@ $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1Ni
   user    0m6.068s
   sys     0m38.440s
 ```
-
-
