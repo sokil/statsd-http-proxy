@@ -13,6 +13,22 @@ Authentication based on JWT token.
 * [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
 * [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
 
+## Table of contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Authentication](#authentication)
+* [Rest resources](#rest-resources)
+  * [Heartbeat](#heartbeat)
+  * [Count](#count)
+  * [Gauge](#gauge)
+  * [Timing](#timing)
+  * [Set](#set)
+* [Response](#response)
+* [Testing](#testing)
+* [Benchmark](#benchmark)
+
+
 ## Installation
 
 ```
@@ -26,7 +42,7 @@ Also available [Docker image](https://hub.docker.com/r/sokil/statsd-rest-server/
 docker run -p 80:80 sokil/statsd-rest-server:0.5.1 --verbose
 ```
 
-## Useage
+## Usage
 
 Server options:
 ```
