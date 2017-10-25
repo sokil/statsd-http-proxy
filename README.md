@@ -36,8 +36,22 @@ statsd-rest-server \
 	--http-port=8080 \
 	--statsd-host=127.0.0.1 \
 	--statsd-port=8125 \
-	--jwt-secret=somesecret
+	--jwt-secret=somesecret \
+	--metric-prefix=prefix.subprefix
 ```
+
+Command line arguments:
+
+| Parameter       | Description                          | Default value                                                                  |
+|-----------------|--------------------------------------|--------------------------------------------------------------------------------|
+| verbose         | Print debug info to stderr           | Optional. Default false                                                        |
+| http-host       | Host of HTTP server                  | Optional. Default 127.0.0.1. To accept connections on any interface, set to "" |
+| http-port       | Port of HTTP server                  | Optional. Default 80                                                           |
+| statsd-host     | Host of StatsD instance              | Optional. Default 127.0.0.1                                                    |
+| statsd-port     | Port of StatsD instance              | Optional. Default 8125                                                         |
+| jwt-secret      | JWT token secret                     | Optional. If not set, server accepts all connections                           |
+| metric-prefix   | Prefix, added to any metric name     | Optional. If not set, do not add prefix                                        |
+| version         | Print version of server and exit     | Optional                                                                       |
 
 ## Authentication
 

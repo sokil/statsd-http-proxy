@@ -42,6 +42,7 @@ var httpHost = flag.String("http-host", defaultHTTPHost, "HTTP Host")
 var httpPort = flag.Int("http-port", defaultHTTPPort, "HTTP Port")
 var statsdHost = flag.String("statsd-host", defaultStatsDHost, "StatsD Host")
 var statsdPort = flag.Int("statsd-port", defaultStatsDPort, "StatsD Port")
+var metricPrefix = flag.String("metric-prefix", "", "Prefix of metric name")
 var tokenSecret = flag.String("jwt-secret", "", "Secret to encrypt JWT")
 var verbose = flag.Bool("verbose", false, "Verbose")
 var version = flag.Bool("version", false, "Show version")
@@ -64,6 +65,11 @@ func main() {
 		log.SetOutput(os.Stderr)
 	} else {
 		log.SetOutput(ioutil.Discard)
+	}
+
+	// prepare metric prefix
+	if *metricPrefix != "" && (*metricPrefix)[len(*metricPrefix) - 1:] != "." {
+		*metricPrefix = *metricPrefix + "."
 	}
 
 	// create HTTP router
@@ -176,7 +182,7 @@ func handleHeartbeatRequest(w http.ResponseWriter, r *http.Request) {
 func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
-	key := vars["key"]
+	key := *metricPrefix + vars["key"]
 
 	// get count value
 	var value = 1
@@ -209,7 +215,7 @@ func handleCountRequest(w http.ResponseWriter, r *http.Request) {
 func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
-	key := vars["key"]
+	key := *metricPrefix + vars["key"]
 
 	// get gauge shift
 	shiftPostFormValue := r.PostFormValue("shift")
@@ -246,7 +252,7 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 func handleTimingRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
-	key := vars["key"]
+	key := *metricPrefix + vars["key"]
 
 	// get timing
 	time, err := strconv.ParseInt(r.PostFormValue("time"), 10, 64)
@@ -273,7 +279,7 @@ func handleTimingRequest(w http.ResponseWriter, r *http.Request) {
 func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 	// get key
 	vars := mux.Vars(r)
-	key := vars["key"]
+	key := *metricPrefix + vars["key"]
 
 	// get set value
 	var value = 1
