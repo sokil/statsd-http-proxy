@@ -68,7 +68,7 @@ func main() {
 	}
 
 	// prepare metric prefix
-	if *metricPrefix != "" && (*metricPrefix)[len(*metricPrefix) - 1:] != "." {
+	if *metricPrefix != "" && (*metricPrefix)[len(*metricPrefix)-1:] != "." {
 		*metricPrefix = *metricPrefix + "."
 	}
 
@@ -244,7 +244,6 @@ func handleGaugeRequest(w http.ResponseWriter, r *http.Request) {
 
 	// send gauge value request
 	statsdClient.Gauge(key, value)
-
 
 }
 
