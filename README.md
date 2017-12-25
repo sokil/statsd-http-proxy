@@ -40,7 +40,7 @@ make build
 Also available [Docker image](https://hub.docker.com/r/sokil/statsd-http-proxy/):
 
 ```
-docker run -p 80:80 sokil/statsd-http-proxy:0.5.1 --verbose
+docker run -p 80:80 sokil/statsd-http-proxy:latest --verbose
 ```
 
 ## Usage
