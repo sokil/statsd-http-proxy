@@ -3,7 +3,7 @@
 *.dll
 *.so
 *.dylib
-statsd-rest-server
+statsd-http-proxy
 bin/
 
 # third party components

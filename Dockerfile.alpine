@@ -5,22 +5,25 @@ RUN apk update && \
     apk add --no-cache --virtual .build-deps \
         ca-certificates \
         make \
-        wget \  
+        wget \
         git \
         curl \
         go \
         musl-dev && \
     # update certs
-    update-ca-certificates && \
+    update-ca-certificates
+
+RUN \
     # get latest stable version
     VERSION=$(curl https://api.github.com/repos/sokil/statsd-http-proxy/releases/latest 2>/dev/null | grep tag_name | awk -F'"' '{print $4}') && \
-    echo VERSION && \
+    echo ${VERSION} && \
     # dowload source
     wget https://github.com/sokil/statsd-http-proxy/archive/$VERSION.tar.gz && \
     tar -zxvf ${VERSION}.tar.gz && \
     cd statsd-http-proxy-${VERSION} && \
     # make and install source
     make build && \
+    find . && \
     chmod +x ./bin/statsd-http-proxy && \
     mv ./bin/statsd-http-proxy /usr/local/bin && \
     # clear

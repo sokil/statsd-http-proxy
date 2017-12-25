@@ -2,8 +2,8 @@
 
 HTTP Server with REST interface to StatsD
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-rest-server?2)](https://goreportcard.com/report/github.com/sokil/statsd-rest-server)
-[![Build Status](https://travis-ci.org/sokil/statsd-rest-server.svg?branch=master)](https://travis-ci.org/sokil/statsd-rest-server)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-http-proxy?2)](https://goreportcard.com/report/github.com/sokil/statsd-http-proxy)
+[![Build Status](https://travis-ci.org/sokil/statsd-http-proxy.svg?branch=master)](https://travis-ci.org/sokil/statsd-http-proxy)
 
 This server is a HTTP proxy to UDP connection.
 Useful for sending metrics to StatsD from frontend by AJAX.
@@ -33,21 +33,21 @@ Authentication based on JWT token.
 ## Installation
 
 ```
-got clone git@github.com:sokil/statsd-rest-server.git
+got clone git@github.com:sokil/statsd-http-proxy.git
 make build
 ```
 
-Also available [Docker image](https://hub.docker.com/r/sokil/statsd-rest-server/):
+Also available [Docker image](https://hub.docker.com/r/sokil/statsd-http-proxy/):
 
 ```
-docker run -p 80:80 sokil/statsd-rest-server:0.5.1 --verbose
+docker run -p 80:80 sokil/statsd-http-proxy:0.5.1 --verbose
 ```
 
 ## Usage
 
 Server options:
 ```
-statsd-rest-server \
+statsd-http-proxy \
 	--verbose \
 	--http-host=127.0.0.1 \
 	--http-port=8080 \
@@ -178,7 +178,7 @@ Intel(R) Core(TM) i5-2450M CPU @ 2.50GHz Dual Core / 8 GB RAM
 Siege test:
 
 ```
-$ GOMAXPROCS=2 ./bin/statsd-rest-server --verbose --http-host=127.0.0.1 --http-port=8080 --statsd-host=127.0.0.1 --statsd-port=8125 --jwt-secret=somesecret
+$ GOMAXPROCS=2 ./bin/statsd-http-proxy --verbose --http-host=127.0.0.1 --http-port=8080 --statsd-host=127.0.0.1 --statsd-port=8125 --jwt-secret=somesecret
 
 $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzdGF0c2QtcmVzdC1zZXJ2ZXIiLCJpYXQiOjE1MDY5NzI1ODAsImV4cCI6MTg4NTY2Mzc4MCwiYXVkIjoiaHR0cHM6Ly9naXRodWIuY29tL3Nva2lsL3N0YXRzZC1yZXN0LXNlcnZlciIsInN1YiI6InNva2lsIn0.sOb0ccRBnN1u9IP2jhJrcNod14G5t-jMHNb_fsWov5c' "http://127.0.0.1:8080/count/a.b.c.d POST value=42"
   ** SIEGE 4.0.2
