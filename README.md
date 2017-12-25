@@ -1,4 +1,5 @@
-# statsd-rest-server
+# StatsD HTTP Proxy
+
 HTTP Server with REST interface to StatsD
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-rest-server?2)](https://goreportcard.com/report/github.com/sokil/statsd-rest-server)
