@@ -1,5 +1,6 @@
 FROM ubuntu:17.10
 
+# todo: replace with latest https://api.github.com/repos/sokil/statsd-http-proxy/releases/latest
 ENV VERSION=0.6
 
 ENV APT_PACKAGES="ca-certificates make  git  wget  golang"
