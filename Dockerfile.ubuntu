@@ -3,8 +3,8 @@ FROM ubuntu:17.10
 RUN \
     # install requirements
     apt-get update && \
-    APT_PACKAGES="ca-certificates make git wget golang" && \
-    apt-get install -y --no-install-recommends ${APT_PACKAGES}
+    APT_PACKAGES="ca-certificates make git wget curl golang" && \
+    apt-get install -y --no-install-recommends ${APT_PACKAGES} && \
     # get latest stable version
     VERSION=$(curl https://api.github.com/repos/sokil/statsd-http-proxy/releases/latest 2>/dev/null | grep tag_name | awk -F'"' '{print $4}') && \
     # download, build source and install
