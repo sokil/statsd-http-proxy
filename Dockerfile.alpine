@@ -1,12 +1,12 @@
 FROM alpine:3.6
 
-ENV VERSION=0.5.1
+ENV VERSION=0.6
 
 RUN apk update && \
-	# install requirements
+    # install requirements
     apk add --no-cache bash && \
     apk add --no-cache --virtual .build-deps \
-	    ca-certificates \
+        ca-certificates \
         make \
         git \
         wget \
@@ -21,7 +21,7 @@ RUN apk update && \
     chmod +x ./bin/statsd-rest-server && \
     mv ./bin/statsd-rest-server /usr/local/bin && \
     # clear
-	rm -rf statsd-rest-server-${VERSION} && \
+    rm -rf statsd-rest-server-${VERSION} && \
     apk del .build-deps
 
 # start service
