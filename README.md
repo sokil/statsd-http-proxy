@@ -9,11 +9,6 @@ This server is a HTTP proxy to UDP connection.
 Useful for sending metrics to StatsD from frontend by AJAX.
 Authentication based on JWT token.
 
-## Useful resources
-* [https://github.com/etsy/statsd](https://github.com/etsy/statsd) - StatsD sources
-* [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
-* [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
-
 ## Table of contents
 
 * [Installation](#installation)
@@ -202,3 +197,8 @@ $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1Ni
   user    0m6.068s
   sys     0m38.440s
 ```
+
+## Useful resources
+* [https://github.com/etsy/statsd](https://github.com/etsy/statsd) - StatsD sources
+* [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
+* [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
