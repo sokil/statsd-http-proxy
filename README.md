@@ -12,6 +12,7 @@ Authentication based on JWT token.
 ## Table of contents
 
 * [Installation](#installation)
+* [Requirements](#requirements)
 * [Usage](#usage)
 * [Authentication](#authentication)
 * [Rest resources](#rest-resources)
@@ -38,6 +39,12 @@ Also available [Docker image](https://hub.docker.com/r/sokil/statsd-http-proxy/)
 docker run -p 80:80 sokil/statsd-http-proxy:latest --verbose
 ```
 
+## Requirements
+
+* [sokil/go-statsd-client](https://github.com/sokil/go-statsd-client) - StatsD client library for Go
+* [dgrijalva/jwt-go](https://github.com/dgrijalva/jwt-go) - JSON Web Tokens builder and parser
+* [gorilla/mux](https://github.com/gorilla/mux) - URL router and dispatcher
+	
 ## Usage
 
 Server options:
