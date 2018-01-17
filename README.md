@@ -24,6 +24,7 @@ Authentication based on JWT token.
 * [Response](#response)
 * [Testing](#testing)
 * [Benchmark](#benchmark)
+* [Useful resources](#useful-resources)
 
 
 ## Installation
