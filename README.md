@@ -161,7 +161,7 @@ Other HTTP status codes:
 | 401 Unauthorized | Token not sent                       |
 | 403 Forbidden    | Token invalid/expired                |
 | 404 Not found    | Invalid url requested                |
-| 404 Wrong method | When method for resource not allowed |
+| 405 Wrong method | When method for resource not allowed |
 
 ## Testing
 
