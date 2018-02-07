@@ -48,8 +48,9 @@ docker run -p 80:80 sokil/statsd-http-proxy:latest --verbose
 	
 ## Usage
 
-Server options:
-```
+Run server:
+
+```bash
 statsd-http-proxy \
 	--verbose \
 	--http-host=127.0.0.1 \
@@ -58,6 +59,12 @@ statsd-http-proxy \
 	--statsd-port=8125 \
 	--jwt-secret=somesecret \
 	--metric-prefix=prefix.subprefix
+```
+
+Print server version and exit:
+
+```bash
+statsd-http-proxy --version
 ```
 
 Command line arguments:
