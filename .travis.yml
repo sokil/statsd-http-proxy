@@ -15,7 +15,10 @@ go:
   - 1.7.x
   - master
 
-script:
+before_script:
   - gccgo-6 --version
   - go get -d ./...
   - make build
+  
+script:
+  - ./bin/statsd-http-proxy --version
