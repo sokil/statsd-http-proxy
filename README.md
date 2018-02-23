@@ -83,10 +83,7 @@ Command line arguments:
 
 ## Authentication
 
-Token must be encrypted with secret, specified in CLI parameter `jwt-secret` of server.
-Token sends to server in `X-JWT-Token` header.
-If JWT secret not configured in `jwt-secret` parameter on server start,
-then requests to server accepted without authentication.
+Authentication is optionall. It based on passing JWT token to server, encrypted with secret, specified in `jwt-secret` command line argument. If secret not configured in `jwt-secret`, then requests to server accepted without authentication. Token sends to server in `X-JWT-Token` header.
 
 ## Rest resources
 
