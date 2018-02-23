@@ -101,6 +101,8 @@ func main() {
 		validateCORS(validateJWT(http.HandlerFunc(handleSetRequest))),
 	).Methods("POST")
 
+	router.PathPrefix("/").Methods("OPTIONS").HandlerFunc(handlePreFlightCORSRequest);
+
 	// Create a new StatsD connection
 	statsdClient = statsd.NewClient(*statsdHost, *statsdPort)
 	statsdClient.Open()
@@ -108,7 +110,7 @@ func main() {
 
 	// get server address to bind
 	httpAddress := fmt.Sprintf("%s:%d", *httpHost, *httpPort)
-	log.Printf("Starting HTTP server %s", httpAddress)
+	log.Printf("Starting HTTP server at %s", httpAddress)
 
 	// create http server
 	s := &http.Server{
@@ -132,8 +134,6 @@ func validateCORS(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		origin := r.Header.Get("Origin")
 		if origin != "" {
-			w.Header().Add("Access-Control-Allow-Headers", jwtHeaderName+", X-Requested-With, Origin, Accept, Content-Type, Authentication")
-			w.Header().Add("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
 			w.Header().Add("Access-Control-Allow-Origin", origin)
 		}
 		next.ServeHTTP(w, r)
@@ -293,6 +293,16 @@ func handleSetRequest(w http.ResponseWriter, r *http.Request) {
 
 	// send request
 	statsdClient.Set(key, value)
+}
+
+// Handle PreFlight CORS request with OPTIONS method
+func handlePreFlightCORSRequest(w http.ResponseWriter, r *http.Request) {
+	origin := r.Header.Get("Origin")
+	if origin != "" {
+		w.Header().Add("Access-Control-Allow-Origin", origin)
+		w.Header().Add("Access-Control-Allow-Headers", jwtHeaderName+", X-Requested-With, Origin, Accept, Content-Type, Authentication")
+		w.Header().Add("Access-Control-Allow-Methods", "GET, POST, HEAD, OPTIONS")
+	}
 }
 
 func showVersion() {
