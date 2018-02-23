@@ -36,6 +36,7 @@ const defaultStatsDPort = 8125
 
 // JWT params
 const jwtHeaderName = "X-JWT-Token"
+const jwtQueryStringKeyName = "token"
 
 // declare command line options
 var httpHost = flag.String("http-host", defaultHTTPHost, "HTTP Host")
@@ -151,7 +152,7 @@ func validateJWT(next http.Handler) http.Handler {
 
 			// get JWT from query string
 			if tokenString == "" {
-				tokenString = r.URL.Query().Get("token")
+				tokenString = r.URL.Query().Get(jwtQueryStringKeyName)
 			}
 
 			if tokenString == "" {
