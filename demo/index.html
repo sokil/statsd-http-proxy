@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Statsd Http Proxy</title>
+</head>
+<body>
+
+You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</b> for handling HTTP requests and
+<b>statsdStub.sh</b> for monitoring proxied metrics.
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+    (function() {
+        // Token is valid to 2029-02-23T21:32:22.615Z, and builds with secret: somesecret
+        var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE1MTk0MjE1NDIsImV4cCI6MTg2NjU3Njc0MiwiYXVkIjoiIiwic3ViIjoiIiwiR3JlZXRpbmciOiJIZWxsbywgZGVzY2VuZGFudHMifQ.n2qI2Ar9KzL3IsmlHjZAQmrf_Iz2ugnplwNIl4ELlDk';
+
+        // send some metric
+        setInterval(function() {
+            $.ajax({
+                url: 'http://localhost:8080/count/somekey',
+                method: 'POST',
+                headers: {
+                    'X-JWT-Token': token
+                },
+                data: {
+                    value: 1
+                }
+            });
+        }, 1000);
+
+    })();
+</script>
+</html>
