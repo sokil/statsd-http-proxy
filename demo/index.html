@@ -9,6 +9,12 @@
 You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</b> for handling HTTP requests and
 <b>statsdStub.sh</b> for monitoring proxied metrics.
 
+<ul>
+    <li><a href="#" data-token-mode="token-in-header">Pass token in header</a></li>
+    <li><a href="#" data-token-mode="token-in-query">Pass token in query string</a></li>
+    <li><a href="#" data-token-mode="token-empty">Do not pass token</a></li>
+</ul>
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -16,14 +22,32 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
         // Token is valid to 2029-02-23T21:32:22.615Z, and builds with secret: somesecret
         var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE1MTk0MjE1NDIsImV4cCI6MTg2NjU3Njc0MiwiYXVkIjoiIiwic3ViIjoiIiwiR3JlZXRpbmciOiJIZWxsbywgZGVzY2VuZGFudHMifQ.n2qI2Ar9KzL3IsmlHjZAQmrf_Iz2ugnplwNIl4ELlDk';
 
+        // token mode
+        var tokenMode = "token-in-header";
+        $(document).on('click', '[data-token-mode]', function(e) {
+            tokenMode = $(e.currentTarget).data('token-mode');
+        });
+
         // send some metric
         setInterval(function() {
+            var headers = {};
+            var url = 'http://localhost:8080/count/somekey';
+
+            switch (tokenMode) {
+                case 'token-in-header':
+                    headers['X-JWT-Token'] = token;
+                    break;
+                case 'token-in-query':
+                    url += '?token=' + token;
+                    break;
+                case 'token-empty':
+                    break;
+            }
+
             $.ajax({
-                url: 'http://localhost:8080/count/somekey',
+                url: url,
                 method: 'POST',
-                headers: {
-                    'X-JWT-Token': token
-                },
+                headers: headers,
                 data: {
                     value: 1
                 }

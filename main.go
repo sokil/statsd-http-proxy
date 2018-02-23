@@ -146,8 +146,14 @@ func validateJWT(next http.Handler) http.Handler {
 		if *tokenSecret == "" {
 			next.ServeHTTP(w, r)
 		} else {
-			// get JWT
+			// get JWT from header
 			tokenString := r.Header.Get(jwtHeaderName)
+
+			// get JWT from query string
+			if tokenString == "" {
+				tokenString = r.URL.Query().Get("token")
+			}
+
 			if tokenString == "" {
 				http.Error(w, "Token not specified", 401)
 				return
