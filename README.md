@@ -4,7 +4,7 @@ HTTP Server with REST interface to StatsD
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-http-proxy?2)](https://goreportcard.com/report/github.com/sokil/statsd-http-proxy)
 [![Build Status](https://travis-ci.org/sokil/statsd-http-proxy.svg?branch=master)](https://travis-ci.org/sokil/statsd-http-proxy)
-[![Code Climate](https://codeclimate.com/github/sokil/statsd-http-proxy/badges/gpa.svg)](https://codeclimate.com/github/sokil/statsd-http-proxy)
+[![Code Climate](https://codeclimate.com/github/sokil/statsd-http-proxy/badges/gpa.svg?1)](https://codeclimate.com/github/sokil/statsd-http-proxy)
 
 This server is a HTTP proxy to UDP connection.
 Useful for sending metrics to StatsD from frontend by AJAX.
