@@ -83,7 +83,9 @@ Command line arguments:
 
 ## Authentication
 
-Authentication is optionall. It based on passing JWT token to server, encrypted with secret, specified in `jwt-secret` command line argument. If secret not configured in `jwt-secret`, then requests to server accepted without authentication. Token sends to server in `X-JWT-Token` header.
+Authentication is optional. It based on passing JWT token to server, encrypted with secret, specified in `jwt-secret`
+command line argument. If secret not configured in `jwt-secret`, then requests to server accepted without authentication.
+Token sends to server in `X-JWT-Token` header or in `token` query parameter.
 
 ## Rest resources
 
