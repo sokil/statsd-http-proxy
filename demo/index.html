@@ -43,13 +43,18 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
         setInterval(function() {
             var headers = {};
             var url = 'http://localhost:8080/' + metricType + '/somekey';
+            var data = {};
 
             switch (metricType) {
                 case 'count':
-                    url += '?value=1';
+                    data = {
+                        value: 1
+                    };
                     break;
                 case 'timing':
-                    url += '?time=100';
+                    data = {
+                        time: 100
+                    };
                     break;
             }
 
@@ -58,7 +63,7 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
                     headers['X-JWT-Token'] = token;
                     break;
                 case 'token-in-query':
-                    url += '&token=' + token;
+                    url += '?token=' + token;
                     break;
                 case 'token-empty':
                     break;
@@ -68,9 +73,7 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
                 url: url,
                 method: 'POST',
                 headers: headers,
-                data: {
-                    value: 1
-                }
+                data: data
             });
         }, 1000);
 
