@@ -26,8 +26,8 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
     (function() {
         // Token is valid to 2029-02-23T21:32:22.615Z, and builds with secret: somesecret
         var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE1MTk0MjE1NDIsImV4cCI6MTg2NjU3Njc0MiwiYXVkIjoiIiwic3ViIjoiIiwiR3JlZXRpbmciOiJIZWxsbywgZGVzY2VuZGFudHMifQ.n2qI2Ar9KzL3IsmlHjZAQmrf_Iz2ugnplwNIl4ELlDk';
-
-        // token mode
+        var statsdHttpProxyHost = 'http://localhost:8080';
+        var metricName = 'someMetricName';
         var metricType = "count";
         var tokenMode = "token-in-header";
 
@@ -42,7 +42,7 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
         // send some metric
         setInterval(function() {
             var headers = {};
-            var url = 'http://localhost:8080/' + metricType + '/somekey';
+            var url = statsdHttpProxyHost + '/' + metricType + '/' + metricName;
             var data = {};
 
             switch (metricType) {
