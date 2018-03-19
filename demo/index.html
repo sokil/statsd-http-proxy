@@ -10,6 +10,11 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
 <b>statsdStub.sh</b> for monitoring proxied metrics.
 
 <ul>
+    <li><a href="#" data-metric-type="count">Send count</a></li>
+    <li><a href="#" data-metric-type="timing">Send timing</a></li>
+</ul>
+
+<ul>
     <li><a href="#" data-token-mode="token-in-header">Pass token in header</a></li>
     <li><a href="#" data-token-mode="token-in-query">Pass token in query string</a></li>
     <li><a href="#" data-token-mode="token-empty">Do not pass token</a></li>
@@ -23,7 +28,13 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
         var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE1MTk0MjE1NDIsImV4cCI6MTg2NjU3Njc0MiwiYXVkIjoiIiwic3ViIjoiIiwiR3JlZXRpbmciOiJIZWxsbywgZGVzY2VuZGFudHMifQ.n2qI2Ar9KzL3IsmlHjZAQmrf_Iz2ugnplwNIl4ELlDk';
 
         // token mode
+        var metricType = "count";
         var tokenMode = "token-in-header";
+
+        $(document).on('click', '[data-metric-type]', function(e) {
+            metricType = $(e.currentTarget).data('metricType');
+        });
+
         $(document).on('click', '[data-token-mode]', function(e) {
             tokenMode = $(e.currentTarget).data('token-mode');
         });
@@ -31,7 +42,16 @@ You are running demo of StatsD HTTP Proxy. Please, start <b>statsdHttpProxy.sh</
         // send some metric
         setInterval(function() {
             var headers = {};
-            var url = 'http://localhost:8080/count/somekey';
+            var url = 'http://localhost:8080/' + metricType + '/somekey';
+
+            switch (metricType) {
+                case 'count':
+                    url += '?value=1';
+                    break;
+                case 'timing':
+                    url += '?time=100';
+                    break;
+            }
 
             switch (tokenMode) {
                 case 'token-in-header':
