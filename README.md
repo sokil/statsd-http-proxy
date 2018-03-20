@@ -220,3 +220,4 @@ $ time siege -c 255 -r 255 -b -H 'X-JWT-Token:eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1Ni
 * [Official Docker image for Graphite](https://github.com/graphite-project/docker-graphite-statsd)
 * [Docker image with StatsD, Graphite, Grafana 2 and a Kamon Dashboard](https://github.com/kamon-io/docker-grafana-graphite)
 * [Online JWT generator](http://jwtbuilder.jamiekurtz.com/)
+* [Client for StatsD (Golang)](https://github.com/sokil/go-statsd-client)
