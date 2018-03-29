@@ -5,6 +5,7 @@
 *.dylib
 statsd-http-proxy
 bin/
+pkg/
 
 # third party components
 src
