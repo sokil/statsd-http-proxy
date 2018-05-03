@@ -53,3 +53,10 @@ build-all: build build-shrink build-gccgo build-gccgo-gold
 clean:
 	rm -rf ./bin
 	go clean
+	
+# publish docker to hub
+publish:
+	docker build --tag sokil/statsd-http-proxy:latest -f ./Dockerfile.alpine .
+	docker push sokil/statsd-http-proxy:latest
+	docker build --tag sokil/statsd-http-proxy:$(VERSION) -f ./Dockerfile.alpine .
+	docker push sokil/statsd-http-proxy:$(VERSION)
