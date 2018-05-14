@@ -1,6 +1,6 @@
 # StatsD HTTP Proxy
 
-HTTP proxy to StatsD with REST interface for using in browsers
+StatsD HTTP proxy with REST interface for using in browsers
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-http-proxy?2)](https://goreportcard.com/report/github.com/sokil/statsd-http-proxy)
 [![Build Status](https://travis-ci.org/sokil/statsd-http-proxy.svg?branch=master)](https://travis-ci.org/sokil/statsd-http-proxy)
