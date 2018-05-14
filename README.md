@@ -31,7 +31,7 @@ Authentication based on JWT token.
 ## Installation
 
 ```
-got clone git@github.com:sokil/statsd-http-proxy.git
+git clone git@github.com:sokil/statsd-http-proxy.git
 make build
 ```
 
