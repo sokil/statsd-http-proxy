@@ -81,6 +81,21 @@ Command line arguments:
 | metric-prefix   | Prefix, added to any metric name     | Optional. If not set, do not add prefix                                        |
 | version         | Print version of server and exit     | Optional                                                                       |
 
+Sample code to send metric in browser with JWT token in header:
+
+```javascript
+$.ajax({
+    url: 'http://127.0.0.1:8080/count/some.key.name',
+    method: 'POST',
+    headers: {
+        'X-JWT-Token' => 'some-jwt-token'
+    },
+    data: {
+	value: 100500
+    }
+});
+```
+
 ## Authentication
 
 Authentication is optional. It based on passing JWT token to server, encrypted with secret, specified in `jwt-secret`
