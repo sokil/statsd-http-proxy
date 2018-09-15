@@ -1,5 +1,7 @@
 # StatsD HTTP Proxy
 
+**ABANDONED**: Go to https://github.com/GoMetric/statsd-http-proxy
+
 StatsD HTTP proxy with REST interface for using in browsers
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/sokil/statsd-http-proxy?2)](https://goreportcard.com/report/github.com/sokil/statsd-http-proxy)
